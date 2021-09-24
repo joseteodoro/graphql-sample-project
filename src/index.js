@@ -1,4 +1,4 @@
-import { app, server } from './server';
+const { app, server } = require('./server');
 
 const PORT = 4001;
 

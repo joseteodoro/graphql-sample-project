@@ -1,7 +1,7 @@
-import { Sequelize } from 'sequelize';
-import { sequelize } from '../sequelize';
-import { Ticket } from './Ticket';
+const Sequelize = require('sequelize');
+const sequelize = require('../sequelize');
+const Ticket = require('./Ticket');
 
-export const models = {
+module.exports = {
   Ticket: Ticket.init(sequelize, Sequelize),
 };

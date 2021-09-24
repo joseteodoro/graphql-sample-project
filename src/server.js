@@ -1,6 +1,6 @@
-import express from 'express';
-import { ApolloServer, gql } from 'apollo-server-express';
-import { models } from './db';
+const express = require('express');
+const { ApolloServer, gql } = require('apollo-server-express');
+const { models } = require('./db');
 
 const typeDefs = gql`
   type Ticket {
@@ -70,6 +70,18 @@ const server = new ApolloServer({
 });
 
 const app = express();
-server.applyMiddleware({ app });
 
-export { app, server, };
+const health = (_, res) => {
+  res.json({status: 'up'});
+};
+
+const notfound = (_, res) => {
+  res.status(404).json({message: 'not found on this server.'});
+};
+
+app.get('/health', health);
+server.applyMiddleware({ app });
+// non-existent routes will recieve Forbidden
+app.use(notfound);
+
+module.exports = { app, server };

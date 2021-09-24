@@ -1,6 +1,6 @@
-import { Sequelize } from 'sequelize';
+const { Sequelize } = require('sequelize');
 
-export class Ticket extends Sequelize.Model {
+class Ticket extends Sequelize.Model {
   static init (sequelize, DataTypes) {
     return super.init(
       {
@@ -20,3 +20,5 @@ export class Ticket extends Sequelize.Model {
     Ticket.belongsTo(Ticket, { as: 'parent', foreignKey: 'parentId' });
   }
 }
+
+module.exports = Ticket;
