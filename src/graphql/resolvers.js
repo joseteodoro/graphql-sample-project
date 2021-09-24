@@ -1,4 +1,3 @@
-
 const repository = require('../db/repositories/tickets');
 
 const resolvers = {

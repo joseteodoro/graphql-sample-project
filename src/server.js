@@ -1,10 +1,5 @@
 const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
-const { typeDefs } = require('./graphql/schema');
-const resolvers = require('./graphql/resolvers');
-
-const server = new ApolloServer({ typeDefs, resolvers });
-
+const { server } = require('./graphql/apollo');
 const app = express();
 
 const health = (_, res) => {
@@ -20,4 +15,4 @@ server.applyMiddleware({ app });
 // non-existent routes will recieve 404
 app.use(notfound);
 
-module.exports = { app, server };
+module.exports = { app };

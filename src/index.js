@@ -1,4 +1,5 @@
-const { app, server } = require('./server');
+const { app } = require('./server');
+const { server } = require('./graphql/apollo');
 
 const PORT = 4001;
 

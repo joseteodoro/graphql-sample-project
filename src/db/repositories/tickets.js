@@ -1,5 +1,7 @@
 const { models } = require('../');
 
+const couldFound = item => item || Promise.reject(new Error('not found!'));
+
 const list = async (where) => {
   return models.Ticket.findAll({ where });
 };
@@ -11,7 +13,8 @@ const listAll = async () => {
 const findBy = async ({ id }) => {
   return models.Ticket.findOne({
     where: { id },
-  });
+  })
+    .then(couldFound);
 };
 
 const create = async ({ title, isCompleted }) => {
@@ -29,23 +32,25 @@ const update = async (id, { title, isCompleted, parentId }) => {
 };
 
 const remove = async ({ id }) => {
-  return findBy({ id })
-    .then(ticket => {
-      return ticket.destroy();
-    });
+  return removeChildren({ parentId: id })
+    .then(() => findBy({ id }))
+    .then(ticket => ticket.destroy())
+    .then(() => true)
+    .catch(() => false);
+};
+
+const removeChildren = async ({ parentId }) => {
+  return models.Ticket.update({ parentId: null }, { where: { parentId } });
 };
 
 const removeParent = async ({ id }) => {
-  return findBy({ id })
-    .then(ticket => {
-      ticket.parentId = null;
-      return ticket.save();
-    });
+  return models.Ticket.update({ parentId: null }, { where: { id } })
+    .then(() => list({ id }));
 };
 
 const updateParent = async ({ parentId, childrenIds: id }) => {
   return models.Ticket.update({ parentId }, { where: { id } })
-    .then(() => list({ id }));
+    .then(() => findBy({ id: parentId }));
 };
 
 module.exports = {
