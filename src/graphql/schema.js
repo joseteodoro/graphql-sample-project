@@ -1,6 +1,6 @@
-const { buildSchema } = require('graphql');
+const { gql } = require('apollo-server-express');
 
-const typeDefs = `
+const typeDefs = gql`
   type Ticket {
     id: ID!
     title: String!
@@ -9,10 +9,10 @@ const typeDefs = `
   }
 
   type Query {
-    # return a list of all root level (parentless) tickets.
+    # done return a list of all root level (parentless) tickets.
     tickets: [Ticket]!
 
-    # return the ticket with the given id
+    # done return the ticket with the given id
     ticket(id: ID!): Ticket!
   }
 
@@ -40,5 +40,4 @@ const typeDefs = `
   }
 `;
 
-const schema = buildSchema(typeDefs);
-module.exports = schema;
+module.exports = { typeDefs };

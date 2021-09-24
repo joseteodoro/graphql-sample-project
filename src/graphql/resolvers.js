@@ -1,25 +1,35 @@
-const { models } = require('../db');
 
-/**
- * TODO: Your task is implementing the resolvers. Go through the README first.
- * TODO: Your resolvers below will need to implement the typedefs given above.
- */
+const repository = require('../db/repositories/tickets');
 
 const resolvers = {
   Query: {
-    /**
-     * We have implemented this first query for you to set up an initial pattern.
-     */
-    tickets: async (root, args, context) => {
-      return models.Ticket.findAll({
-        where: {
-          parentId: null,
-        },
-      });
-    },
+    tickets: repository.listAll, // should add all childs in the result recursively!
+    ticket: async (_, { id }) => repository.findBy({ id }),
   },
   Ticket: {},
-  Mutation: {},
+  Mutation: {
+    createTicket: async (_, { title, isCompleted = false }) => {
+      return repository.create({ title, isCompleted });
+    },
+    updateTicket: async (_, { id, title }) => {
+      return repository.update(id, { title });
+    },
+    toggleTicket: async (_, { id, isCompleted }) => {
+      return repository.update(id, { isCompleted });
+    },
+    setParentOfTicket: async (_, { parentId, childId }) => {
+      return repository.update(childId, { parentId });
+    },
+    removeTicket: async (_, { id }) => {
+      return repository.remove({ id });
+    },
+    removeParentFromTicket: async (_, { id }) => {
+      return repository.removeParent({ id });
+    },
+    addChildrenToTicket: async (_, { id, childrenIds }) => {
+      return repository.updateParent({ parentId: id, childrenIds });
+    },
+  },
 };
 
 module.exports = resolvers;
