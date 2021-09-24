@@ -17,7 +17,7 @@ const notfound = (_, res) => {
 
 app.get('/health', health);
 server.applyMiddleware({ app });
-// non-existent routes will recieve Forbidden
+// non-existent routes will recieve 404
 app.use(notfound);
 
 module.exports = { app, server };
