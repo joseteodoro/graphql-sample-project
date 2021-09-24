@@ -1,5 +1,7 @@
-import { app } from "./server";
+import { app, server } from './server';
+
+const PORT = 4001;
 
 app.listen({ port: PORT }, () => {
-    console.log(`Server ready at: http://localhost:${PORT}${server.graphqlPath}`);
+  console.log(`Server ready at: http://localhost:${PORT}${server.graphqlPath}`);
 });

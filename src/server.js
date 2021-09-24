@@ -1,8 +1,6 @@
-import express from "express";
-import { ApolloServer, gql } from "apollo-server-express";
-import { models } from "./db";
-
-const PORT = 4001;
+import express from 'express';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { models } from './db';
 
 const typeDefs = gql`
   type Ticket {
@@ -57,21 +55,21 @@ const resolvers = {
     tickets: async (root, args, context) => {
       return models.Ticket.findAll({
         where: {
-          parentId: null
-        }
+          parentId: null,
+        },
       });
-    }
+    },
   },
   Ticket: {},
-  Mutation: {}
+  Mutation: {},
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 const app = express();
 server.applyMiddleware({ app });
 
-export { app };
+export { app, server, };
