@@ -49,5 +49,66 @@ describe('src/repository tickets suite', () => {
           expect(error.message).to.be.equal('not found!');
         });
     });
+    it('when I update a ticket it works properly', async () => {
+      const title = 'b1';
+      const isCompleted = false;
+      return repository.create({ title, isCompleted })
+        .then(created => repository.update(created.id, { title: 'b2', parentId: created.id, isCompleted: true }))
+        .then(record => {
+          expect(record).not.be.undefined;
+          expect(record.id).not.be.undefined;
+          expect(record.title).be.equal('b2');
+          expect(record.isCompleted).to.be.true;
+          expect(record.parentId).not.be.undefined;
+        });
+    });
+    it('when I delete a ticket it works properly', async () => {
+      const title = 'b1';
+      const isCompleted = false;
+      return repository.create({ title, isCompleted })
+        .then(({ id }) => repository.remove({ id }))
+        .then(res => {
+          expect(res).to.be.true;
+        });
+    });
+    it('when I delete a non existent ticket does not crash', async () => {
+      return repository.remove({ id: 1000000 })
+        .then(res => {
+          expect(res).to.be.false;
+        });
+    });
+    it('when I update parent it works properly', async () => {
+      const isCompleted = false;
+      return Promise.all([
+        repository.create({ title: 'parent', isCompleted }),
+        repository.create({ title: 'ch0', isCompleted }),
+        repository.create({ title: 'ch0', isCompleted }),
+        repository.create({ title: 'ch0', isCompleted }),
+      ])
+        .then(records => {
+          return repository.updateParent({
+            parentId: records[0].id,
+            childrenIds: [records[1].id, records[2].id, records[3].id],
+          })
+            .then(() => {
+              return repository.list({ parentId: records[0].id })
+                .then(children => {
+                  expect(children).not.be.undefined;
+                  expect(Array.isArray(children)).to.be.true;
+                  expect(children[0].title).to.be.equal('ch0');
+                  expect(children[1].title).to.be.equal('ch0');
+                  expect(children[2].title).to.be.equal('ch0');
+                });
+            })
+            .then(() => {
+              return repository.removeParent({ id: records[1].id })
+                .then(repository.findBy({ id: records[1].id }))
+                .then(found => {
+                  expect(found).not.be.undefined;
+                  expect(found.parentId).to.be.undefined;
+                });
+            })
+        });
+    });
   });
 });
