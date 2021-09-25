@@ -16,22 +16,20 @@ describe('src/query tickets suite', () => {
       expect(result.data).to.not.be.undefined;
       expect(result.data.tickets).to.not.be.undefined;
       expect(Array.isArray(result.data.tickets)).to.be.true;
-      expect(result.data).to.be.deep.equal({
-        tickets: [
-          {
-            id: '1',
-            title: 'Foo',
-          },
-          {
-            id: '2',
-            title: 'Bar',
-          },
-          {
-            id: '3',
-            title: 'Baz',
-          },
-        ],
-      });
+      expect(result.data.tickets.slice(0, 3)).to.be.deep.equal([
+        {
+          id: '1',
+          title: 'Foo',
+        },
+        {
+          id: '2',
+          title: 'Bar',
+        },
+        {
+          id: '3',
+          title: 'Baz',
+        },
+      ]);
     });
     it('when I try to find a tickets by id it works properly', async () => {
       const result = await apollo.executeOperation({
