@@ -8,14 +8,17 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "NODE_ENV=test npm run setup && npx --exec babel-node ./src/index.js",
+    "start": "npm run setup && npx --exec babel-node ./src/index.js",
     "watch": "npx nodemon --exec babel-node ./src/index.js",
     "migrate": "npx sequelize-cli db:migrate --config ./src/db/config/config.json --migrations-path ./src/db/migrations",
     "seed": "npx sequelize-cli db:seed:all --config ./src/db/config/config.json --seeders-path ./src/db/seeders",
     "setup": "npm run migrate && npm run seed",
     "lint": "eslint ./src --ext .json --ext .js --fix",
     "run-test": "NODE_ENV=test mocha --import \"tests/helpers\" \"tests/**/*@(.spec.js)\" --timeout 5000 --exit;",
-    "test": "rm -rf tests.db 2&1> /dev/null; NODE_ENV=test npm run setup && npm run run-test"
+    "test": "rm -rf tests.db 2&1> /dev/null; NODE_ENV=test npm run setup && npm run run-test",
+    "sonar": "npm run test:cover && npm run sonar:scanner;",
+    "test:cover": "nyc npm test",
+    "sonar:scanner": "sonar-scanner"
   },
   "dependencies": {
     "apollo-server-express": "2.8.1",
@@ -45,10 +48,31 @@
     "sequelize-cli": "5.5.0",
     "sinon": "^11.1.2",
     "sinon-chai": "^3.7.0",
-    "supertest": "^6.1.6"
+    "supertest": "^6.1.6",
+    "nyc": "^14.1.1",
+    "sonar-scanner": "^3.1.0",
+    "sonarqube-scanner": "^2.4.0"
   },
   "engines": {
     "node": ">=10.16.3"
   },
-  "engineStrict": true
+  "engineStrict": true,
+  "nyc": {
+    "all": true,
+    "instrument": true,
+    "extension": [
+      "js"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "exclude": [
+      "tests/**/*",
+      "out/**/*",
+      "lcov-report/**/*",
+      ".scannerwork/**/*",
+      "coverage"
+    ]
+  }
 }
