@@ -8,12 +8,14 @@
     "test": "tests"
   },
   "scripts": {
+    "start": "NODE_ENV=test npm run setup && npx --exec babel-node ./src/index.js",
     "watch": "npx nodemon --exec babel-node ./src/index.js",
     "migrate": "npx sequelize-cli db:migrate --config ./src/db/config/config.json --migrations-path ./src/db/migrations",
     "seed": "npx sequelize-cli db:seed:all --config ./src/db/config/config.json --seeders-path ./src/db/seeders",
     "setup": "npm run migrate && npm run seed",
     "lint": "eslint ./src --ext .json --ext .js --fix",
-    "test": "mocha --import \"tests/helpers\" \"tests/**/*@(.spec.js)\" --timeout 5000 --exit;"
+    "run-test": "NODE_ENV=test mocha --import \"tests/helpers\" \"tests/**/*@(.spec.js)\" --timeout 5000 --exit;",
+    "test": "rm -rf tests.db 2&1> /dev/null; NODE_ENV=test npm run setup && npm run run-test"
   },
   "dependencies": {
     "apollo-server-express": "2.8.1",
