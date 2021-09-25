@@ -5,5 +5,5 @@ const sinonChai = require('sinon-chai');
 chai.use(promised);
 chai.use(sinonChai);
 chai.should();
-global.expect = chai.expec;
-global.assert = chai.assert;
+
+module.exports = { expect: chai.expect, assert: chai.assert };
