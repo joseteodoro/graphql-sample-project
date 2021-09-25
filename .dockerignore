@@ -1,0 +1,12 @@
+node_modules
+tests
+coverage
+.nyc_output
+.git
+.gitignore
+Jenkinsfile
+.git
+sonar-project.properties
+.eslintrc
+.editorconfig
+README.md
