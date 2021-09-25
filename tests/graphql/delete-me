@@ -1,0 +1,44 @@
+query {
+  ticket (id: 2) {
+    id,
+    title,
+    isCompleted,
+    children {
+      id,
+      title,
+      isCompleted
+    }
+  }
+}
+query {
+  ticket (id: 3) {
+    id,
+    title,
+    isCompleted,
+    children {
+      id,
+      title,
+      isCompleted
+    }
+  }
+}
+
+{errors} not null
+
+mutation {
+  setParentOfTicket(parentId: 2, childId: 3) {
+    id,
+    title,
+    isCompleted
+  }
+}
+result:
+{
+  "data": {
+    "setParentOfTicket": {
+      "id": "3",
+      "title": "Baz",
+      "isCompleted": false
+    }
+  }
+}

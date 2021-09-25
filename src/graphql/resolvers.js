@@ -2,7 +2,7 @@ const repository = require('../db/repositories/tickets');
 
 const resolvers = {
   Query: {
-    tickets: repository.listAll, // should add all childs in the result recursively!
+    tickets: async () => repository.listAll(), // should add all childs in the result recursively!
     ticket: async (_, { id }) => repository.findBy({ id }),
   },
   Ticket: {},
