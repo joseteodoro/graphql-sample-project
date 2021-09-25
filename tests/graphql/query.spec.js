@@ -43,6 +43,7 @@ describe('src/query tickets suite', () => {
           }
         }`,
       });
+      console.log(result.errors)
       expect(result.errors).to.be.undefined;
       expect(result.data).to.not.be.undefined;
       expect(result.data.ticket).to.not.be.undefined;
