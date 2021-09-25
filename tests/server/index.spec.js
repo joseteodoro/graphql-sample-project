@@ -13,5 +13,10 @@ describe('src/index express server suite', () => {
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(404)
     );
+    it('when I call and graphql endpoint should return 405, but not 404', () => supertest(server.app)
+      .head('/graphql')
+      .expect('Content-Type', 'text/html; charset=utf-8')
+      .expect(405)
+    );
   });
 });
