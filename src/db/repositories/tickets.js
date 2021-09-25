@@ -10,10 +10,8 @@ const listAll = async () => {
   return list({ parentId: null });
 };
 
-const findBy = async ({ id }) => {
-  return models.Ticket.findOne({
-    where: { id },
-  })
+const findBy = async (where) => {
+  return models.Ticket.findOne({ where })
     .then(couldFound);
 };
 

@@ -15,7 +15,7 @@
     "setup": "npm run migrate && npm run seed",
     "lint": "eslint ./src --ext .json --ext .js --fix",
     "run-test": "NODE_ENV=test mocha --import \"tests/helpers\" \"tests/**/*@(.spec.js)\" --timeout 5000 --exit;",
-    "test": "rm -rf tests.db; NODE_ENV=test npm run setup && npm run run-test",
+    "test": "rm -rf tests.db; NODE_ENV=test npm run migrate && npm run run-test",
     "sonar": "npm run test:cover && npm run sonar:scanner;",
     "test:cover": "nyc npm test",
     "sonar:scanner": "sonar-scanner"
@@ -72,7 +72,9 @@
       "out/**/*",
       "lcov-report/**/*",
       ".scannerwork/**/*",
-      "coverage"
+      "coverage",
+      "src/index.js",
+      "src/db/seeders/*"
     ]
   }
 }
