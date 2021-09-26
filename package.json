@@ -74,7 +74,8 @@
       ".scannerwork/**/*",
       "coverage",
       "src/index.js",
-      "src/db/seeders/*"
+      "src/db/seeders/*",
+      "src/db/migrations/*"
     ]
   }
 }

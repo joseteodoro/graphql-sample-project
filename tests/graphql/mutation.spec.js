@@ -133,5 +133,57 @@ describe('src/mutation tickets suite', () => {
       });
       expect(stub).to.been.calledOnceWith('1');
     });
+    it('when I try to set parent for a ticket it works properly', async () => {
+      const stub = sandbox.stub(repository, 'update').resolves({
+        id: 2,
+        parentId: null,
+        title: 'Fz',
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      const result = await apollo.executeOperation({
+        query: `mutation {
+          setParentOfTicket (parentId: 1, childId: 2) {
+            id
+          }
+        }`,
+      });
+      expect(result.errors).to.be.undefined;
+      expect(result.data).to.not.be.undefined;
+      expect(result.data.setParentOfTicket).to.not.be.undefined;
+      expect(result.data).to.be.deep.equal({
+        setParentOfTicket: {
+          id: '2',
+        },
+      });
+      expect(stub).to.been.calledOnceWith('2', { parentId: '1' });
+    });
+    it('when I try to remove a parent for a ticket it works properly', async () => {
+      const stub = sandbox.stub(repository, 'update').resolves({
+        id: 2,
+        parentId: null,
+        title: 'Fz',
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      const result = await apollo.executeOperation({
+        query: `mutation {
+          removeParentFromTicket (id: 1) {
+            id
+          }
+        }`,
+      });
+      expect(result.errors).to.be.undefined;
+      expect(result.data).to.not.be.undefined;
+      expect(result.data.removeParentFromTicket).to.not.be.undefined;
+      expect(result.data).to.be.deep.equal({
+        removeParentFromTicket: {
+          id: '1',
+        },
+      });
+      expect(stub).to.been.calledOnceWith('1');
+    });
   });
 });

@@ -43,7 +43,7 @@ const removeChildren = async ({ parentId }) => {
 
 const removeParent = async ({ id }) => {
   return models.Ticket.update({ parentId: null }, { where: { id } })
-    .then(() => list({ id }));
+    .then(() => findBy({ id }));
 };
 
 const updateParent = async ({ parentId, childrenIds: id }) => {
