@@ -1,5 +1,5 @@
 const emptyChild = ticket => ticket && ticket.id
-  ? ({...ticket, children: []})
+  ? Object.assign(ticket, { children: [] })
   : ticket;
 
 const emptyChildren = (items = []) => items.map(emptyChild);

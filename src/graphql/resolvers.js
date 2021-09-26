@@ -3,8 +3,8 @@ const service = require('../services');
 
 const resolvers = {
   Query: {
-    tickets: async () => repository.listAll(), // should add all childs in the result recursively!
-    ticket: async (_, { id }) => repository.findBy({ id }),
+    tickets: async () => repository.listAll().then(service.fillChildren), // should add all childs in the result recursively!
+    ticket: async (_, { id }) => repository.findBy({ id }).then(service.fillChildren), // also should add all childs in the result recursively!
   },
   Ticket: {},
   Mutation: {
