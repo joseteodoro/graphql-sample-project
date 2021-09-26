@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const { models } = require('../');
 
 const couldFound = item => item || Promise.reject(new Error('not found!'));
@@ -51,6 +53,14 @@ const updateParent = async ({ parentId, childrenIds: id }) => {
     .then(() => findBy({ id: parentId }));
 };
 
+const listAllChildren = () => {
+  return list({
+    parentId: {
+      [Op.not]: null,
+    },
+  });
+};
+
 module.exports = {
   listAll,
   findBy,
@@ -60,4 +70,5 @@ module.exports = {
   removeParent,
   list,
   updateParent,
+  listAllChildren,
 };
