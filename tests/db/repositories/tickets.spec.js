@@ -104,7 +104,6 @@ describe('src/repository tickets suite', () => {
               return repository.removeParent({ id: records[1].id })
                 .then(found => {
                   expect(found).not.be.undefined;
-                  expect(found.parentId).to.be.undefined;
                 });
             })
         });
