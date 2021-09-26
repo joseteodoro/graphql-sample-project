@@ -160,8 +160,8 @@ describe('src/mutation tickets suite', () => {
       expect(stub).to.been.calledOnceWith('2', { parentId: '1' });
     });
     it('when I try to remove a parent for a ticket it works properly', async () => {
-      const stub = sandbox.stub(repository, 'update').resolves({
-        id: 2,
+      const stub = sandbox.stub(repository, 'removeParent').resolves({
+        id: 1,
         parentId: null,
         title: 'Fz',
         isCompleted: true,
@@ -183,7 +183,7 @@ describe('src/mutation tickets suite', () => {
           id: '1',
         },
       });
-      expect(stub).to.been.calledOnceWith('1');
+      expect(stub).to.been.calledOnceWith({ id: '1' });
     });
   });
 });
